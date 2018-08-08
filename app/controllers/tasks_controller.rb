@@ -15,14 +15,12 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
   
-    respond_to do |wants|
-      if @task.save
-        flash[:success] = 'Task が登録されました'
-        redirect_to @message
-      else
-        flash.now[:danger] = 'Task が登録されませんでした'
-        render :new
-      end
+    if @task.save
+      flash[:success] = 'Task が登録されました'
+      redirect_to @task
+    else
+      flash.now[:danger] = 'Task が登録されませんでした'
+      render :new
     end
   end
 
