@@ -2,5 +2,4 @@
 <p><%= @task.content %></p>
 
 <%= render 'form', task: @task %>
-
-<%= link_to '一覧に戻る', tasks_path %>
+<%= render 'nav', task: @task %>
