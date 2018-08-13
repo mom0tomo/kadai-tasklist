@@ -1,11 +1,19 @@
 <h1>タスクID : <%= @task.id %></h1>
-<p>
-  <%= @task.content %>
-  (<%= @task.status %>)
-</p>
 
-<%= render 'nav', task: @task %>
+<table class="table table-bordered">
+  <tr>
+    <th>ID</th>
+    <td><%= @task.id %></td>
+  </tr>
+  <tr>
+    <th>タスク</th>
+    <td><%= @task.content %></td>
+  </tr>
+  <tr>
+    <th>Status</th>
+    <td><%= @task.status %></td>
+  </tr>
+</table>
 
-<%= link_to '編集', edit_task_path(@task) %>
- | 
-<%= link_to '削除', @task, method: :delete, data: { confirm: '本当に削除してよろしいですか？' } %>
+<%= link_to '編集', edit_task_path(@task), class: "btn btn-default" %>
+<%= link_to '削除', @task, method: :delete, data: { confirm: '本当に削除してよろしいですか？' }, class: "btn btn-danger" %>
