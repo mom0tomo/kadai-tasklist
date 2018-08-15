@@ -16,7 +16,9 @@
         <%= f.text_field :content, class: 'form-control' %>
       </div>
       <div class="form-group">
-        <%= f.select :status, [['アクティブ', 'active'], ['完了', 'inactive']], class: 'form-control' %>
+        <%= f.label :content, 'ステータス' %>
+        <!-- selectメソッドのHTMLのオプションは第４引数なので、第３引数に空のハッシュを記述しておく -->
+        <%= f.select :status, [['アクティブ', 'active'], ['完了', 'inactive']] , {} , class: 'form-control' %>
       </div>
 
         <%= f.submit '登録', class: "btn btn-primary" %>
