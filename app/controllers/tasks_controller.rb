@@ -1,17 +1,21 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   def index
     if logged_in?
       @user = current_user
-      @task = current_user.tasks.build
-      @tasks = current_user.tasks.order('created_at DESC').page(params[:page])
+      @task = @user.tasks.build
+      @tasks = @user.tasks.order('created_at DESC').page(params[:page])
     else
       redirect_to signup_path
     end
   end
 
   def show
+    if logged_in?
+      set_task
+    else
+      redirect_to signup_path
+    end
   end
 
   def new
@@ -35,6 +39,7 @@ class TasksController < ApplicationController
   end
 
   def update
+    set_task
     if @task.update(task_params)
       flash.now[:success] = 'Task が更新されました'
       redirect_to @task
@@ -45,6 +50,7 @@ class TasksController < ApplicationController
   end
 
   def destroy
+    set_task
     @task.destroy
 
     flash[:success] = 'Task は削除されました'
