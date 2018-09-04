@@ -2,18 +2,25 @@ class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   def index
-    @tasks = Task.all.page(params[:page]).per(10)
+    if logged_in?
+      @user = current_user
+      @task = current_user.tasks.build
+      @tasks = current_user.tasks.order('created_at DESC').page(params[:page])
+    else
+      redirect_to signup_path
+    end
   end
 
   def show
   end
 
   def new
+    @user = current_user
     @task = Task.new
   end
 
   def create
-    @task = Task.new(task_params)
+    @task = current_user.tasks.build(task_params)
   
     if @task.save
       flash[:success] = 'Task が登録されました'
@@ -46,7 +53,6 @@ class TasksController < ApplicationController
   end
 
   private
-
     # taskの検索を共通化する
     def set_task
       @task = Task.find(params[:id])
@@ -54,6 +60,6 @@ class TasksController < ApplicationController
 
     # ストロングパラメータ
     def task_params
-      params.require(:task).permit(:content, :status)
+      params.require(:task).permit(:user_id, :content, :status)
     end
 end
