@@ -14,9 +14,6 @@ class SessionsController < ApplicationController
     end
   end
 
-  def update
-  end
-
   def destroy
     session[:user_id] = nil
     flash[:success] = 'ログアウトしました。'
