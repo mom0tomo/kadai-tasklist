@@ -1,21 +1,14 @@
 class TasksController < ApplicationController
+  before_action :require_user_logged_in
 
   def index
-    if logged_in?
-      @user = current_user
-      @task = @user.tasks.build
-      @tasks = @user.tasks.order('created_at DESC').page(params[:page])
-    else
-      redirect_to signup_path
-    end
+    @user = current_user
+    @task = @user.tasks.build
+    @tasks = @user.tasks.order('created_at DESC').page(params[:page])
   end
 
   def show
-    if logged_in?
-      set_task
-    else
-      redirect_to signup_path
-    end
+    @task = Task.find(params[:id])
   end
 
   def new
@@ -35,11 +28,11 @@ class TasksController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
-    set_task
+    @task = Task.find(params[:id])
+
     if @task.update(task_params)
       flash.now[:success] = 'Task が更新されました'
       redirect_to @task
@@ -50,21 +43,14 @@ class TasksController < ApplicationController
   end
 
   def destroy
-    set_task
+    @task = Task.find(params[:id])
     @task.destroy
 
     flash[:success] = 'Task は削除されました'
-    # リダイレクトのときだけ _url を使う
     redirect_to tasks_url
   end
 
   private
-    # taskの検索を共通化する
-    def set_task
-      @task = Task.find(params[:id])
-    end
-
-    # ストロングパラメータ
     def task_params
       params.require(:task).permit(:user_id, :content, :status)
     end

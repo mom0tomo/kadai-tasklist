@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
-  before_action :require_user_logged_in, only: [:show, :edit, :update, :destroy]
+  before_action :require_user_logged_in, only: [:show]
 
   def show
-    redirect_to tasks_url
+    @user = current_user
   end
 
   def new
@@ -18,7 +18,6 @@ class UsersController < ApplicationController
       flash[:danger] = "ユーザー登録に失敗しました"
       render :new
     end
-    
   end
   
   private
