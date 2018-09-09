@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
 
     if login(email, password)
       flash[:success]
-      redirect_to @user
+      redirect_to root_url
     else
       render :new
     end
